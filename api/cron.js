@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     const message = `오늘 날짜: ${today}`;
 
     try {
-        await axios.post('https://slack.com/api/chat.postMessage', {
+        const response = await axios.post('https://slack.com/api/chat.postMessage', {
             channel: process.env.CHANNEL_ID,
             text: message,
             thread_ts: process.env.THREAD_TS,
@@ -25,6 +25,13 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
             },
         });
+
+        console.log('Slack API response:', response.data);  // Slack API 응답 출력
+
+        if (!response.data.ok) {
+            console.error('Error from Slack API:', response.data.error);
+            return res.status(500).end(`Error: ${response.data.error}`);
+        }
 
         res.status(200).end('Message sent!');
     } catch (error) {
