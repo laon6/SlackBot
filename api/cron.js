@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         day: 'numeric',
     });
 
-    const message = `${today} 슬랙 확인 후 확인완료 댓글 달아주세요.`;
+    const message = `[${today}]\n슬랙 확인 후 확인완료 댓글 달아주세요.`;
 
     try {
         await axios.post('https://slack.com/api/chat.postMessage', {
