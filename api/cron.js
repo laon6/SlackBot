@@ -1,7 +1,6 @@
-const axios = require('axios');
+import axios from 'axios';
 
 export default async function handler(req, res) {
-    // Authorization 체크
     if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
         return res.status(401).end('Unauthorized');
     }
@@ -16,7 +15,6 @@ export default async function handler(req, res) {
     const message = `오늘 날짜: ${today}`;
 
     try {
-        // Slack으로 메시지 보내기
         await axios.post('https://slack.com/api/chat.postMessage', {
             channel: process.env.CHANNEL_ID,
             text: message,
