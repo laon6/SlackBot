@@ -1,7 +1,11 @@
 const axios = require('axios');
-require('dotenv').config();
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
+    // Authorization 체크
+    if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
+        return res.status(401).end('Unauthorized');
+    }
+
     const today = new Date().toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
         year: 'numeric',
@@ -12,10 +16,11 @@ module.exports = async (req, res) => {
     const message = `오늘 날짜: ${today}`;
 
     try {
+        // Slack으로 메시지 보내기
         await axios.post('https://slack.com/api/chat.postMessage', {
             channel: process.env.CHANNEL_ID,
             text: message,
-            thread_ts: process.env.THREAD_TS,  // 스레드에 댓글로 달기
+            thread_ts: process.env.THREAD_TS,
         }, {
             headers: {
                 Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`,
@@ -23,9 +28,9 @@ module.exports = async (req, res) => {
             },
         });
 
-        res.status(200).json({ success: true });
+        res.status(200).end('Message sent!');
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).end('Error sending message');
     }
-};
+}
