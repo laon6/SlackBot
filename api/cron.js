@@ -5,14 +5,24 @@ export default async function handler(req, res) {
         return res.status(401).end('Unauthorized');
     }
 
-    const today = new Date().toLocaleDateString('ko-KR', {
+    // const today = new Date().toLocaleDateString('ko-KR', {
+    //     timeZone: 'Asia/Seoul',
+    //     year: 'numeric',
+    //     month: 'long',
+    //     day: 'numeric',
+    // });
+    const nowInKST = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul',
         year: 'numeric',
         month: 'long',
         day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
     });
 
-    const message = `[${today}] ${new Date()} \n슬랙 확인 후 확인완료 댓글 달아주세요.`;
+
+    const message = `[${nowInKST}] \n슬랙 확인 후 확인완료 댓글 달아주세요.`;
     //<!channel> 
     try {
         await axios.post('https://slack.com/api/chat.postMessage', {
