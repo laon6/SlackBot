@@ -5,7 +5,7 @@ export default async function handler(req, res) {
         return res.status(401).end('Unauthorized');
     }
 
-    // 
+
     // const today = new Date().toLocaleDateString('ko-KR', {
     //     timeZone: 'Asia/Seoul',
     //     year: 'numeric',
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     //     day: 'numeric',
     // });
 
-    const nowInKST = new Date().toLocaleString('ko-KR', {
+    const nowInKST = new Date().toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
         year: 'numeric',
         month: 'long',
