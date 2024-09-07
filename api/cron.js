@@ -12,8 +12,8 @@ export default async function handler(req, res) {
         day: 'numeric',
     });
 
-    const message = `[${today}] <!channel> \n슬랙 확인 후 확인완료 댓글 달아주세요.`;
-
+    const message = `[${today}] ${new Date()} \n슬랙 확인 후 확인완료 댓글 달아주세요.`;
+    //<!channel> 
     try {
         await axios.post('https://slack.com/api/chat.postMessage', {
             channel: process.env.CHANNEL_ID,
