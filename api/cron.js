@@ -4,15 +4,17 @@ export default async function handler(req, res) {
     if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
         return res.status(401).end('Unauthorized');
     }
-
-    const today = new Date().toLocaleDateString('ko-KR', {
+    const nowInKST = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul',
         year: 'numeric',
         month: 'long',
         day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
     });
 
-    const message = `[${today}] ${new Date()} \n슬랙 확인 후 확인완료 댓글 달아주세요.`;
+    const message = `[${today}] ${nowInKST} \n슬랙 확인 후 확인완료 댓글 달아주세요.`;
     //<!channel> 
     try {
         await axios.post('https://slack.com/api/chat.postMessage', {
@@ -25,8 +27,6 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
             },
         });
-
-        console.log(new Date());
 
 
         res.status(200).end('Message sent!');
