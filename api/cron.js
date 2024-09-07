@@ -26,6 +26,9 @@ export default async function handler(req, res) {
             },
         });
 
+        console.log(new Date());
+
+
         res.status(200).end('Message sent!');
     } catch (error) {
         console.error(error);
